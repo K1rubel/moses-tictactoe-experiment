@@ -1,0 +1,125 @@
+; !(import! &self ./game_engine)
+; !(import! &self ./random-player)
+!(import! &self ./helpers)
+
+;; ---------------------------------------------------------
+;; MINIMAX PLAYER
+;; ---------------------------------------------------------
+
+;; Main entry point: Takes board and icon (player)
+;; Returns the new board with the best move made
+(= (minimax-player $bs $player)
+   (let* (($opponent (get-opponent $player))
+        ($_ (println! (oppppppooooonent $opponent)))
+          ($empty-indices (get-empty-cells $bs () 0))
+          ($_ (println! (eeeeemmmmmpty indicesss $empty-indices)))
+          ;; Find the best index by calling helper
+          ($best-idx (find-best-move-loop $bs $empty-indices -1000 -1 $player $opponent)))
+     
+     (replace-by-index $bs $player $best-idx)))
+
+
+;; Loop through all empty indices to find the one with the highest Minimax score
+(= (find-best-move-loop $bs $candidates $best-score $best-move $player $opponent)
+   (if (== $candidates ())
+       $best-move
+       (let* ((($curr-idx $rest-candidates) (decons-atom $candidates))
+              ;; 1. Make the move temporarily
+              ($new-bs (replace-by-index $bs $player $curr-idx))
+              ;; 2. Call Minimax on this new board (it is now opponent's turn, so isMax=False)
+              ($score (minimax $new-bs False $player $opponent))) 
+         
+         ;; 3. Compare score. If better, update best-move.
+         (if (> $score $best-score)
+             (find-best-move-loop $bs $rest-candidates $score $curr-idx $player $opponent)
+             (find-best-move-loop $bs $rest-candidates $best-score $best-move $player $opponent)))))
+
+
+;; ---------------------------------------------------------
+;; THE CORE MINIMAX FUNCTION
+;; ---------------------------------------------------------
+
+(= (minimax $bs $isMax $player $opponent)
+   (let $score (evaluate-board $bs $player $opponent)
+     ;; BASE CASE: If game over (someone won), return score
+     (if (not (== $score 0))
+         $score
+         ;; BASE CASE: If board full (draw), return 0
+         (let $empty-cells (get-empty-cells $bs () 0) 
+            (if (== $empty-cells ())
+                0
+                ;; RECURSIVE STEP
+                (if $isMax
+                    ;; Maximizer's turn (Player)
+                    (run-minimax-loop $bs $empty-cells -1000 True $player $opponent)
+                    ;; Minimizer's turn (Opponent)
+                    (run-minimax-loop $bs $empty-cells 1000 False $player $opponent)))))))      
+
+
+;; Helper to loop through moves inside the recursive Minimax
+(= (run-minimax-loop $bs $candidates $best-val $isMax $player $opponent)
+   (if (== $candidates ())
+       $best-val
+       (let* ((($idx $rest) (decons-atom $candidates))
+              ($mover (if $isMax $player $opponent))
+              ($new-bs (replace-by-index $bs $mover $idx))
+              ;; Recurse: flip isMax
+              ($val (minimax $new-bs (not $isMax) $player $opponent)))
+         
+         (if $isMax
+             ;; If Maximizing, pick the higher value
+             (let $new-best (max $best-val $val)
+                  (run-minimax-loop $bs $rest $new-best $isMax $player $opponent))
+             ;; If Minimizing, pick the lower value
+             (let $new-best (min $best-val $val)
+                  (run-minimax-loop $bs $rest $new-best $isMax $player $opponent))))))
+
+
+;; ---------------------------------------------------------
+;; UTILITIES
+;; ---------------------------------------------------------
+
+
+;; redundant def
+; (= (replace-by-index $row $item $index)
+;         (if (== $row ())
+;                 ()
+;                 (let ($h $t) (decons-atom $row)
+;                         (if (== $index 0)
+;                                 (cons-atom $item $t)
+;                                 (let $r (eval (replace-by-index $t $item (- $index 1)))
+;                                         (eval (cons-atom $h $r)))))))        
+; ;; Simple max/min helpers
+; (= (max $a $b) (if (> $a $b) $a $b))
+; (= (min $a $b) (if (< $a $b) $a $b))
+
+
+; (= (get-winner $bs) (is-member $bs (winninig-state)))
+
+; !(is-member 1 (1 2 3))
+; !(is-member (1 1 2) (($a $b $c)))
+
+(= (winninig-state)
+    (;; rows
+    ($w $w $w $d $e $f $g $h $i)
+    ($a $b $c $w $w $w $g $h $i)
+    ($a $b $c $d $e $f $w $w $w)
+
+    ;; columns
+    ($w $b $c $w $e $f $w $h $i)
+    ($a $w $c $d $w $f $g $w $i)
+    ($a $b $w $d $e $w $g $h $w)
+
+    ;; diagonals
+    ($w $b $c $d $w $f $g $h $w)
+    ($a $b $w $d $w $f $w $h $i)
+))
+
+
+;; testing minimax player
+; !(find-best-move-loop  (E E E E E E E E E) (0 1 2 3 4 5 6 7 8) -1000 -1 X O)
+
+; !(minimax-player (E E E E E E E E E) X)
+
+; !(minimax (E E E E E E E E E) True X O)
+!(minimax-player (X E E E E E X E E) X) 
