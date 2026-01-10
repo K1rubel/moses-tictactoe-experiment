@@ -57,6 +57,7 @@
 
 (= (getKnobMultip (mkDiscKnob $knob $multiplicity $curr $def $disAll)) $multiplicity)
 (= (getKnobMultip (mkLSK $discKnob )) (getKnobMultip $discKnob))
+(= (getKnobMultip (mkSSK $discKnob )) (getKnobMultip $discKnob))
 
 ;; Calculates the knob Specification of an LSK
 ;; (: getKnobSpec (-> LogicalSubtreeKnob DiscSpec))

@@ -1,11 +1,11 @@
-!(import! &self ./random-player)
+; !(import! &self ./random-player)
 ; !(import! &self ./minimax)
-!(import! &self ./utilities)
+; !(import! &self ./utilities)
 
 ;; Main Strategy: Returns index of a winning move, or False if none exists
 ;; XXX -- add a procedure that makes the move using the index returned
-(: play-win Expression Symbol Bool)
-(: play-win Expression Symbol Number)
+; (: play-win Expression Symbol Bool)
+; (: play-win Expression Symbol Number)
 (= (play-win $board $player)
    (let $candidates (get-empty-cells $board () 0)
         (find-winning-move $board $player $candidates)))

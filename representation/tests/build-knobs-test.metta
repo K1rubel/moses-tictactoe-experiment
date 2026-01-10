@@ -10,14 +10,14 @@
 !(import! &self ../../representation/build-knobs)
 
 (= (tree1) 
-    (mkTree (mkNode prioritized_or) Nil))
+    (mkTree (mkNode PRIORITIZED-OR) Nil))
 (= (tree2) 
-    (mkTree (mkNode prioritized_or) (Cons (mkTree (mkNode play-fork) Nil) Nil)))
+    (mkTree (mkNode PRIORITIZED-OR) (Cons (mkTree (mkNode play-fork) Nil) Nil)))
 
 ; !(buildKnobs (tree1) NilMMap)    
 !(buildKnobs (tree2) NilMMap)    
 
-((mkTree (mkNode prioritized_or) (Cons (mkNullVex (Cons (mkTree (mkNode play-block) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-fork) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-corner) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-side) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-win) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-center) Nil) Nil)) Nil))))))) 
+((mkTree (mkNode PRIORITIZED-OR) (Cons (mkNullVex (Cons (mkTree (mkNode play-block) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-fork) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-corner) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-side) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-win) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-center) Nil) Nil)) Nil))))))) 
 
 (ConsMMap ((mkDiscSpec 2) (mkSSK (mkDiscKnob (mkKnob (mkNodeId (6))) (mkMultip 2) (mkDiscSpec 0) (mkDiscSpec 0) Nil))) 
 
@@ -32,7 +32,7 @@
 (ConsMMap ((mkDiscSpec 2) (mkSSK (mkDiscKnob (mkKnob (mkNodeId (1))) (mkMultip 2) (mkDiscSpec 0) (mkDiscSpec 0) Nil))) NilMMap)))))))
 
 
-((mkTree (mkNode prioritized_or) (Cons (mkTree (mkNode prioritized_or) 
+((mkTree (mkNode PRIORITIZED-OR) (Cons (mkTree (mkNode PRIORITIZED-OR) 
 
 (Cons (mkTree (mkNode play-fork) Nil) (Cons (mkNullVex (Cons (mkTree (mkNode play-center) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-side) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-corner) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-block) Nil) Nil)) (Cons (mkNullVex (Cons (mkTree (mkNode play-win) Nil) Nil)) Nil))))))) 
 

@@ -9,15 +9,15 @@
 
                 ;; Process Child
                 (($tNew $mNew) 
-                    (if (== $node prioritized_or)
+                    (if (== $node PRIORITIZED-OR)
                         ;; Case A: Control Node - Recurse
                         (eval (buildStrategy $tree (mkNodeId $curId) $MMap))
                         
                         ;; Case B: Atomic Move (Terminal)
                         ;; In buildLogical, this inserts a new operator to allow growth.
-                        ;; Here, we insert a 'prioritized_or' above the move to allow the chain to expand.
+                        ;; Here, we insert a 'PRIORITIZED-OR' above the move to allow the chain to expand.
                         ;; Then we add knobs to this new structure.
-                        (let $itree (eval (insertNodeAtPosition $tree (mkNodeId $curId) (mkNode prioritized_or))) 
+                        (let $itree (eval (insertNodeAtPosition $tree (mkNodeId $curId) (mkNode PRIORITIZED-OR))) 
                              (eval (addStrategyKnobs $itree (mkNodeId $curId) True $MMap)))
                     )
                 )
@@ -39,7 +39,7 @@
             ((mkTree (mkNode $op) $children) $subtree) 
             
             ;; 2. THE MISSING PART: Add knobs to the current node
-            ;; This allows the algorithm to swap the current node (e.g., 'prioritized_or' or a Move) 
+            ;; This allows the algorithm to swap the current node (e.g., 'PRIORITIZED-OR' or a Move) 
             ;; with alternatives defined in 'addStrategyKnobs'.
             (($t1 $mp1) (eval (addStrategyKnobs $tree (mkNodeId $nodeId) True $MMap)))
             

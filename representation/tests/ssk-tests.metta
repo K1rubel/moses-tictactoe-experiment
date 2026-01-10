@@ -3,6 +3,6 @@
 !(import! &self ../../utilities/tree)
 !(import! &self ../../representation/ssk)
 
-!(strategySubtreeKnob (mkTree (mkNode prioritized_or) Nil)
+!(strategySubtreeKnob (mkTree (mkNode PRIORITIZED-OR) Nil)
     (mkNodeId (0)) (mkTree (mkNode play-fork)))
 

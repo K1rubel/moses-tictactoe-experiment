@@ -5,8 +5,8 @@
 !(import! &self ../../representation/knob-representation)
 !(import! &self ../../representation/strategy-probe)
 
-!(strategyProbe (mkTree (mkNode prioritized_or) (Cons (mkTree (mkNode play-win)) Nil))
+!(strategyProbe (mkTree (mkNode PRIORITIZED-OR) (Cons (mkTree (mkNode play-win)) Nil))
     (mkNodeId (0))
     ((mkTree (mkNode play-block) Nil) (mkTree (mkNode play-win) Nil)) True ())
 
-; !(strategySubtreeKnob  (mkTree (mkNode prioritized_or) Nil) (mkNodeId (0)) (mkTree (mkNode play-block) Nil))
+; !(strategySubtreeKnob  (mkTree (mkNode PRIORITIZED-OR) Nil) (mkNodeId (0)) (mkTree (mkNode play-block) Nil))
