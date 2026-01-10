@@ -1,0 +1,7 @@
+(= (complexityBasedScorer $rep $inst $complexityRatio)
+    (let* (($tree (eval (getCandidate $rep $inst)))
+            ($_ (println! (candidate tree from complexityBasedScorer $tree)))
+            ($cscore (getCscore $tree $complexityRatio))
+            ($_ (println! (ccompossite score $cscore))))
+        $cscore))
+; (chain (eval (getCandidate $rep $inst)) $tree (eval (getCscore $tree $complexityRatio))))
