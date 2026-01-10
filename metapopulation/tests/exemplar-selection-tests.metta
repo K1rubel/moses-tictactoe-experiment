@@ -1,7 +1,7 @@
 !(import! &self ../../utilities/general-helpers)
 !(import! &self ../../metapopulation/exemplar-selection)
 
-; (= (metapop) (ConsOS (mkTree (mkNode prioritized_or) Nil) NilOS))
+; (= (metapop) (ConsOS (mkTree (mkNode PRIORITIZED-OR) Nil) NilOS))
 (= (exemplar-list0) (ConsOS (mkExemplar (treeA) (mkDemeId "1") (mkCscore 0.9 0.5 0.2 0.1 -0.6) (mkBscore (Cons 1 (Cons 0 Nil))))
                         (ConsOS (mkExemplar (treeB) (mkDemeId "2") (mkCscore 0.85 0.6 0.1 0.05 0.6) (mkBscore (Cons 1 (Cons 0 Nil))))
                           (ConsOS (mkExemplar (treeC) (mkDemeId "3") (mkCscore 0.4 0.7 0.05 0.01 0.3) (mkBscore (Cons 1 (Cons 0 Nil))))
