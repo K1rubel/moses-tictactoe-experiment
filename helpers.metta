@@ -1,3 +1,4 @@
+!(import! &self ./lib-he)
 (= (get-empty-cells $bs $acc $counter)
     (if (== $bs ())
         $acc
@@ -71,9 +72,9 @@
 
 ;; Helper: Checks if indices A, B, and C are identical and not Empty
 (= (check-line $bs $a $b $c)
-    (let* (($v1 (get-nth $bs $a))
-           ($v2 (get-nth $bs $b))
-           ($v3 (get-nth $bs $c)))
+    (let* (($v1 (index-atom $bs $a))
+           ($v2 (index-atom $bs $b))
+           ($v3 (index-atom $bs $c)))
         
         ;; Logic: If v1 != E, AND v1 == v2, AND v2 == v3, then return v1. Else return E.
         (if (== $v1 E) 
@@ -85,11 +86,11 @@
                 E))))
 
 ;; Helper: recursive function to get the Nth element of a list
-(= (get-nth $bs $index)
-    (let ($h $t) (decons-atom $bs)
-        (if (== $index 0)
-            $h
-            (get-nth $t (- $index 1)))))
+; (= (index-atom $bs $index)
+;     (let ($h $t) (decons-atom $bs)
+;         (if (== $index 0)
+;             $h
+;             (index-atom $t (- $index 1)))))
 
 ;; Returns 10 if player wins, -10 if opponent wins, 0 otherwise
 (= (evaluate-board $bs $player $opponent)
@@ -110,6 +111,67 @@
    (if (== $indices ())
        False
        (let ($idx $rest) (decons-atom $indices)
-            (if (== (get-nth $board $idx) E)
+            (if (== (index-atom $board $idx) E)
                 $idx
                 (find-first-empty $board $rest)))))
+
+
+;; checking for winning player identification logic
+;; mock winning states
+; (= (winning-states) ((($x $x $y) $x) (($y $x $x) $x)))
+(= (winning-states) ((($x $x $x $a $b $c $d $e $f) $x) 
+                    (($a $b $c $x $x $x $d $e $f) $x)
+                    (($a $b $c $d $e $f $x $x $x) $x) 
+                    (($x $a $b $x $c $d $x $e $f) $x)
+                    (($a $x $b $c $x $d $e $x $f) $x)
+                    (($a $b $x $c $d $x $e $f $x) $x)
+                    (($x $a $b $c $x $d $e $f $x) $x)
+                ))
+
+; !(is-member (X X E) (winning-states))                
+; !(is-member (X O E) (winning-states))                
+
+; !(let $state (superpose ((($x $x $y) $x) (($y $x $x) $x)))
+;     (unify (X X E) $state $x false))
+
+; !(let $state (superpose (winning-states))
+;     (unify (X X E) $state $x false))
+; !(unify ((X X E) X) ())
+
+; !(let $state (superpose (let $x (winning-states))) (unify $state ((X X E) $x) $x $state))
+; !(let $states (winning-states) (collapse (let $state (superpose $states) (unify $state ((O X E) $x) $x (empty)))))
+(= (get-winner2 $board) 
+    (let $states (winning-states) 
+        (let $result (collapse (let $state (superpose $states) (unify $state ($board $x) (if (= $x E) (empty) $x) (empty))))
+            (if (= $result ())
+                E
+                (car-atom $result)))))
+
+; !(get-winner2 (E E E X X X E O E))        
+; !(get-winner (E E E X X X E O E))        
+; !(get-winner2 (E E E O X X E E E))        
+
+;; Test cases for get-winner2
+; !(assertEqual
+;   (get-winner2 (E E E
+;                  E E E
+;                  E E E))
+;   E)
+
+; !(assertEqual
+;   (get-winner2 (X X X
+;                  E O E
+;                  O E E))
+;   X)
+
+; !(assertEqual
+;   (get-winner2 (O X E
+;                  X O E
+;                  E E O))
+;   O)
+
+; !(assertEqual
+;   (get-winner2 (X O X
+;                  X O O
+;                  O X X))
+;   E)
